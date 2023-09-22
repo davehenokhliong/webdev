@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hong Kong International Airport Flight Information</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="no-padding">
+    <div class="header">
+      <h1>Hong Kong International Airport<br>Flight Information</h1>
+    </div>  
+  </div>
+
+  <div class="padding">
+	
+    <div class="date-text">
+        <p><b>Date: <span id="date"></span> </b></p> 
+    </div>
+
+    <div class="dep-arr-button">
+        <span class="underline" id="depInd">Departure</span> <span>&nbsp&nbsp</span>
+        <label class="toggle">
+            <input type="checkbox" id="check">
+            <span class="slider"></span>
+        </label>
+        <span>&nbsp&nbsp</span><span id="arrInd">Arrival</span>
+    </div>
+
+    <div id="title-info">
+      <p>Departure Information</p>
+    </div>
+    
+    <div id="early-button">
+        <button class="earlyButton">Load Early Flights</button>
+    </div>
+
+    <p></p><p></p>
+
+    <div id="plane-info">
+          <!-- <div class="row">
+            <div class="column"><p><b>Flight No.: </b>CX231 CX232 ER234 WE232 QW123 WE342 ER456 QW123</p></div>
+            <div class="column"><p><b>Scheduled Time: </b>12:30</p></div>
+          </div>
+          <div class="row">
+            <div class="column"><p><b>Destination (Airport): </b><br>Tokyo (Narita International Airport)</p></div>
+            <div class="column special"><p></p></div>
+          </div>
+          <div class="row">
+            <div class="column"><p><b>Terminal: </b>D1 <b>Aisle: </b>d1 <b>Gate: </b> XX</p></div>
+            <div class="column"><p><b>Status: </b>Delay at 28/01/2023</p></div>
+          </div> -->
+    </div>
+
+    <p></p><p></p>
+    <div id="more-button">
+        <button class="moreButton">Load More Flights</button>
+    </div>
+
+  </div>
+
+    <script>
+
+        //FOR DATE
+        let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        let today = new Date();
+        let day = today.getDate();
+        let month = months[today.getMonth()];
+        let year = today.getFullYear();
+        let hour = today.getHours();
+        let min = today.getMinutes();
+        let dateString = today.getFullYear()+'-'+('0' + (today.getMonth()+1)).slice(-2)+'-'+('0' + today.getDate()).slice(-2);
+        document.getElementById('date').innerHTML = `${day} ${month} ${year}`;
+
+        
+        //FOR MAKING DICTIONARY
+        var iataCodeName = {};
+
+        //get the lines information
+        fetch("iata.json")
+        .then(response => {
+        response.json().then(lines => { //lines tuh nama json yg udah diparse
+
+        lines.forEach(line => { 
+            iataCode = Object.values(line)[0];
+            iataName = Object.values(line)[1];
+            iataMuni = Object.values(line)[5];
+            iataCodeName[iataCode] = iataMuni+" ("+iataName+")";
+        });
+        })
+        })
+
+        //DETECT IF LOAD MORE FLIGHTS OR NOT
+        let loadInd="false";
+        let loadMore = document.getElementById('more-button');
+        loadMore.addEventListener('click', (evt) => {
+            loadInd = "true"; 
+            request();
+        });
+
+        //DETECT IF LOAD EARLY FLIGHTS OR NOT
+        let earlyCounter = 0;
+        let earlyInd="false";
+        let loadEarly = document.getElementById('early-button');
+        loadEarly.addEventListener('click', (evt) => {
+            earlyInd = "true";  
+            request();
+        });
+
+        //DETECT IF BUTTON IS DEPART OR ARRIVE
+        let currentClass="false";
+        let check = document.getElementById('check');
+        let title = document.querySelector('#title-info');
+        let depInd = document.querySelector('#depInd');
+        let arrInd = document.querySelector('#arrInd');
+        check.addEventListener('change', (evt) => {
+          if (evt.target.checked == true){
+            currentClass = "true";  //arrive
+            loadInd="false"; earlyInd="false";
+            title.innerHTML = '<p><b>Arrival Information</b></p>';
+            depInd.classList.remove('underline');
+            arrInd.classList.add('underline');
+            document.getElementById('early-button').style.display = 'block';
+            document.getElementById('more-button').style.display = 'block';
+            earlyCounter = 0;
+            request();
+          } else {
+            currentClass = "false"; //depart
+            loadInd="false"; earlyInd="false";
+            title.innerHTML = '<p><b>Departure Information</b></p>';
+            depInd.classList.add('underline');
+            arrInd.classList.remove('underline');
+            document.getElementById('early-button').style.display = 'block';
+            document.getElementById('more-button').style.display = 'block';
+            earlyCounter = 0;
+            request();
+          }
+        });
+
+
+        //FETCH THE API
+        function request(){
+            fetch(`flight.php?date=${dateString}&lang=en&cargo=false&arrival=${currentClass}`)
+            .then( response => {
+                if (response.status == 200) {
+                response.json().then( 
+                    flightLedger => {
+                    let output = "";
+                    let flightToday = flightLedger[0].list;
+
+                    for(let i=0; i<flightLedger.length; i++){
+                        if (flightLedger[i].date == dateString) flightToday = flightLedger[i].list;
+                    }
+
+                    let counter = 0;
+                    for(let flightInfo of flightToday){
+                        output += '<div class="box">'
+                        
+
+                        if (earlyInd=="false"){
+                            if (flightInfo.time.substr(0,2) < hour) {
+                              earlyCounter += 1; 
+                              continue;
+                            } else if (flightInfo.time.substr(0,2) == hour){
+                                if (flightInfo.time.substr(3,2) < min) {
+                                  earlyCounter += 1;
+                                  continue;
+                                }
+                            }
+                        }
+
+                       
+                        
+                      
+                        //FIRST ROW
+                        output += '<div class="row">';
+                        //for flight-no
+                        output += '<div class="column"><p><b>Flight No.: </b>';
+                        let flightNumbers = flightInfo.flight;
+                        for (let i=0; i < flightNumbers.length; i++) {
+                            output += flightNumbers[i].no;
+                            output += '&nbsp&nbsp&nbsp&nbsp';
+                        }
+                        output += '</p></div>';
+                        //for time
+                        output += '<div class="column"><p><b>Scheduled Time: </b>'+flightInfo.time+'</p></div>';
+                        output += '</div>';
+
+                  
+                        //2ND&3RD ROW
+                        //for destination/origin
+                        output += '<div class="row">';
+                        if (currentClass=="false"){
+                            output += '<div class="column"><p><b>Destination (Airport): </b><br>';
+                            let flightDestination = flightInfo.destination;
+                            for (let j=0; j < flightDestination.length; j++) {
+                                output += iataCodeName[flightDestination[j]];
+                                if(flightDestination.length == 1) break;
+                                output += '<br>';
+                            }
+                            output += '</p></div>';
+                            output += '<div class="column special"><p></p></div>';
+                            output += '</div>';
+
+                            output += '<div class="row">';
+                            output += '<div class="column"><p><b>Terminal: </b>'+flightInfo.terminal+'&nbsp&nbsp&nbsp&nbsp';
+                            output += '<b>Aisle: </b>'+flightInfo.aisle+'&nbsp&nbsp&nbsp&nbsp';
+                            output += '<b>Gate: </b>'+flightInfo.gate+'</p></div>';
+                            output += '<div class="column"><p><b>Status: </b>'+flightInfo.status+'</p></div>';
+                            
+
+
+                        } else if (currentClass=="true") {
+                            output += '<div class="column"><p><b>Origin (Airport): </b><br>';
+                            let flightOrigin = flightInfo.origin;
+                            for (let j=0; j < flightOrigin.length; j++) {
+                                output += iataCodeName[flightOrigin[j]];
+                                output += '<br>';
+                            }
+                            output += '</p></div>';
+                            output += '<div class="column special"><p></p></div>';
+                            output += '</div>';
+
+                            output += '<div class="row">';
+                            output += '<div class="column"><p><b>Parking Stand: </b>'+flightInfo.stand+'&nbsp&nbsp&nbsp&nbsp';
+                            output += '<b>Hall: </b>'+flightInfo.hall+'&nbsp&nbsp&nbsp&nbsp';
+                            output += '<b>Belt: </b>'+flightInfo.baggage+'</p></div>';
+                            output += '<div class="column"><p><b>Status: </b>'+flightInfo.status+'</p></div>';
+
+                        }
+                        output += '</div>';
+                        // output += '<div class="seperator"><p><br><br><br></p></div>'
+
+                        //put into HTML
+                        document.getElementById('plane-info').innerHTML = output;
+
+                        //load more flights
+                        counter += 1;
+                        if (counter==10 && loadInd=="false" && earlyInd=="false") {
+                          // console.log("counter1: "+counter);
+                          break;
+                        }
+
+                      
+                        //load early flights
+                        if (counter==(10+earlyCounter) && loadInd=="false" && earlyInd=="true") {
+                          // console.log("counter2: "+counter);
+                          document.getElementById('early-button').style.display = 'none';
+                          break;
+                        }
+                    }
+                    
+                    // console.log("counter:"+counter);
+                    if (earlyInd=="true") document.getElementById('early-button').style.display = 'none';
+                    if (loadInd=="true") document.getElementById('more-button').style.display = 'none';
+                    if (earlyCounter==0) document.getElementById('early-button').style.display = 'none';
+                    if (counter < 10) {
+                      // console.log("counter3: "+counter);
+                      document.getElementById('more-button').style.display = 'none';
+                    }
+                    
+                }
+                );} 
+                
+                else console.log("HTTP return status: "+response.status); //kalo ga 200
+            }); 
+        }
+            
+        request();
+
+    </script>
+
+
+
+</body>
+</html>

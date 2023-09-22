@@ -1,0 +1,120 @@
+/*
+Student Name: LIONG Dave Henokh
+Student Number: 3035902415
+*/
+
+article{
+    width: 800px;
+    border: 1px blue dotted;
+    border-radius: 15px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+h1{
+    font-family: Verdana, sans-serif;
+    font-variant: small-caps;
+    text-align: center;
+    align-self: center;
+}
+
+p{
+    font-family: "Courier New", monospace;
+    text-align: left;
+}
+
+article p:nth-child(n+3):first-line {
+    color: purple;
+    font-weight: bold;
+}
+
+article p:nth-child(2){
+    align-self: flex-end;
+    text-align: center;
+}
+
+article p:nth-child(3){
+    align-self: flex-start;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+article p:nth-child(3)::before {
+    position: absolute;
+    content: url("hunt.jpg");
+    transform: scale(0.45);
+    transform-origin: top left;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    right: 0px;
+}
+
+article p:nth-child(4){
+    align-self: center;
+    margin-bottom: 2rem;
+    position: relative;
+    font-size: 1.1rem;
+}
+
+article p:nth-child(4)::before {
+    position: absolute;
+    content: url("jump.jpg");
+    transform: scale(0.35);
+    transform-origin: top left;
+    left: -125px;
+}
+
+article p:nth-child(5){
+    align-self: flex-end;
+    text-align: left;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+article p:nth-child(5)::before {
+    position: absolute;
+    content: url("fled.jpg");
+    transform: scale(0.4);
+    transform-origin: top left;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    right: 104px; 
+}
+
+cite {
+    font-family: papyrus, fantasy;
+    margin-bottom: 1rem;
+}
+
+a{
+    color: black;
+}
+
+a:link{
+    text-decoration: none;
+}
+
+a:visited{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline wavy;
+    text-decoration-color: red;
+    background-color: #CDFEAA;
+}
+
+a:active{
+    text-decoration: none;
+}

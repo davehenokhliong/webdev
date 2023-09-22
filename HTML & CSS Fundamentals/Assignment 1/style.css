@@ -1,0 +1,124 @@
+* {
+    font-size: 1.5vw;
+    font-family: 'Arial';
+    font-weight: bold;
+  }
+  
+  table {
+    border: 1px solid rgb(83, 225, 83);
+    border-collapse: collapse;
+    padding: 5px;
+    table-layout: auto;
+    width: 100%;
+  }
+  
+  table th {
+    border: 1px solid rgb(83, 225, 83);
+    padding:50px;
+    background: lightgreen;
+    color: black;       
+  }
+  
+  table td {
+    border: 1px solid rgb(83, 225, 83);
+    text-align:center;
+    padding:10px;
+    background: #ffffff;
+    color: black;
+  }
+  
+  .plo{
+    background-color: rgb(206, 244, 206);
+  }
+  
+  td[class*="Ed"]{
+    background-color: rgb(206, 244, 206);
+  }
+  
+  .title2 {
+    writing-mode: vertical-rl; 
+    transform: rotate(180deg);
+    /* padding: 5px; */
+    background-color: lightgreen;
+  }
+  
+  .invisible {
+    visibility: none;
+  }
+  
+  .plo {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  @media only screen and (max-width: 500px) {
+    * {
+      font-size: 5vw;
+    }
+  
+    td[class*="Ed"]{
+      display: none;
+    }
+  
+    tr {
+      display: flex;
+      flex-direction: column;
+      border: medium solid lightgreen;
+    }
+  
+    td {
+      display: block;
+    }
+  
+    td[class*="row"]{
+      display: none;
+    }
+  
+    span {
+      display: none;
+    }
+  
+    .title2 {
+      display: none;
+    }
+  
+    .plo{
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  
+    .plo::after{
+      content: ":"
+    }
+  
+    .info1::before{
+      content: "Pursuit of academic / professional excellence, critical intellectual enquiry and life-long learning";
+    }
+  
+    .info2::before{
+      content: "Tackling novel situations and ill-defined problems";
+    }
+  
+    .info3::before{
+      content: "Critical self-reflection, greater understanding of others, and upholding personal and professional ethics";
+    }
+  
+    .info4::before{
+      content: "Intercultural understanding and global citizenship";
+    }
+  
+    .info5::before{
+      content: "Communication and collaboration";
+    }
+  
+    .info6::before{
+      content: "Leadership and advocacy for the improvement of the human condition";
+    }
+  
+    .invisible{
+      display: none;
+    }
+  }
+  
+  

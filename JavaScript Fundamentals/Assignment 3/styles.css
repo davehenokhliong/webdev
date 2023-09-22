@@ -1,0 +1,159 @@
+body {
+	font-family: "Times New Roman", Arial, sans-serif;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.header {
+  background: rgb(0,245,213);
+  background: linear-gradient(0deg, rgba(0,245,213,1) 0%, rgba(4,245,225,1) 36%, rgba(33,214,250,1) 75%); 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  text-align: center;
+	height: 100px;
+}
+
+.padding {
+  padding-right: 70px;
+  padding-left: 70px;
+}
+.date-text {
+  text-align: left;
+  font-size: 20px;
+}
+
+
+/* FOR FLIGHT INFO BOX */
+.box {
+  color: black;
+  border-radius: 3px;
+  outline: 1px solid black;
+}
+
+.row {
+display: flex;
+flex-direction: row;
+}
+
+.column {
+width: 50%;
+padding: 10px;
+}
+
+.column p {
+margin: 0;
+}
+
+/* FOR BUTTONS */
+#more-button {
+  text-align: center;
+}
+
+.moreButton {
+  background-color: lightgreen; 
+  border: 2px solid black; 
+  height: 30px;
+  font-family: 'Times New Roman';
+}
+
+.moreButton:hover {
+  background-color: rgb(145, 218, 166);
+}
+
+.dep-arr-button {
+  background: rgb(0,85,74);
+  background: radial-gradient(circle, rgba(0,85,74,0) 0%, rgba(116,116,116,1) 32%, rgba(91,91,91,1) 100%); 
+  width: 100%;
+  height: 50px;
+  display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+  border: blue solid 1px;
+  border-radius: 20px;
+}
+  
+.toggle input {
+  opacity: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0 0 0 0;
+  transition: .5s;
+  border-radius: 20px;
+}
+  
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 30px;
+  width: 30px;
+  background-color: blue;
+  transition: .5s;
+  border-radius: 50%;
+}
+  
+input:checked + .slider:before {
+  transform: translateX(40px);
+}
+
+#early-button {
+  text-align: center;
+}
+
+.earlyButton {
+  background-color: orange; 
+  border: 2px solid black; 
+  height: 30px;
+  font-family: 'Times New Roman';
+}
+
+.earlyButton:hover {
+  background-color: rgb(249, 200, 110);
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+
+
+  
+@media only screen and (max-width: 700px) {
+
+*{
+  font-size: 3vw;
+}
+
+.padding {
+  padding: 10px;
+}
+
+.box {
+  color: black;
+  border-radius: 3px;
+  outline: 1px solid black;
+}
+
+.row {
+display: block;
+}
+
+.column {
+width: 100%;
+margin: 2px;
+padding: 2px;
+}
+
+.special {
+  display: none;
+}
+}
